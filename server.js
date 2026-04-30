@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3500;
 
 // initiate mongo connection
-await connectDB();
+void connectDB();
 
 
 // CORS
