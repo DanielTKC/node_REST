@@ -1,8 +1,18 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
+
 const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
 const PORT = process.env.PORT || 3500;
+
+mongoose.connect(process.env.DATABASE_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+  })
+  .catch(err => console.error(err));
 
 
 // CORS
