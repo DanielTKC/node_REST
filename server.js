@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import cors from 'cors';
 import connectDB from "./config/dbConnect.js";
+import statesRouter from './routes/states.js';
+
 
 const app = express();
 
@@ -35,6 +37,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/states', statesRouter);
+
 
 
 app.all('*path', (req, res) => {
