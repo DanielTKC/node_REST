@@ -1,18 +1,20 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+import 'dotenv/config';
+import express from 'express';
+import mongoose from 'mongoose';
+import { fileURLToPath } from 'url';
+import path from 'path';
+import cors from 'cors';
+import connectDB from "./config/dbConnect.js";
 
-const express = require('express');
 const app = express();
-const path = require('path');
-const cors = require('cors');
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3500;
 
-mongoose.connect(process.env.DATABASE_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-  })
-  .catch(err => console.error(err));
+// initiate mongo connection
+await connectDB();
 
 
 // CORS
@@ -52,5 +54,7 @@ app.use(function (err,req, res, _next) {
   console.error(err.stack);
   res.status(500).send(err.message)
 })
-
-app.listen(PORT, () => (console.log(`Listening on port ${PORT}`)))
+// Wait for mongo to actually connect before starting server
+mongoose.connection.once('open', () => {
+  app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+});
