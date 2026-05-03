@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 3500;
 // initiate mongo connection
 void connectDB();
 
+// Middlewear
 
 // CORS
 const whitelist = ['http://localhost:3000', 'https://www.yourdomain.com'];
