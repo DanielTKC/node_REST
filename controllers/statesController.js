@@ -25,4 +25,14 @@ const getNickname = (req, res) => {
   const state = statesData.find(s => s.code === req.code);
   res.json({ state: state.state, nickname: state.nickname });
 }
-export default  { getStates, getState, getCapital, getNickname};
+
+const getPopulation = (req, res) => {
+  const state = statesData.find(s => s.code === req.code);
+  res.json({ state: state.state, population: state.population });
+}
+
+const getAdmissionDate = (req, res) => {
+  const state = statesData.find(s => s.code === req.code);
+  res.json({ state: state.state, population: state.admission_date });
+}
+export default  { getStates, getState, getCapital, getNickname, getPopulation, getAdmissionDate };

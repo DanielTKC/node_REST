@@ -13,7 +13,13 @@ router.route('/:state').get(verifyStates, statesController.getState);
 router.route('/:state/capital').get(verifyStates, statesController.getCapital);
 
 // State nicknames
-router.route('/:state/nickname').get(verifyStates, statesController.getNickname)
+router.route('/:state/nickname').get(verifyStates, statesController.getNickname);
+
+// State population
+router.route('/:state/population').get(verifyStates, statesController.getPopulation);
+
+// Admission date
+router.route('/:state/admission').get(verifyStates, statesController.getAdmissionDate);
 
 
 
