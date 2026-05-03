@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
+import morgan from 'morgan';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import cors from 'cors';
@@ -18,7 +19,11 @@ const PORT = process.env.PORT || 3500;
 // initiate mongo connection
 void connectDB();
 
-// Middlewear
+// Middleware
+
+// morgan for logging
+app.use(morgan('dev'));
+
 
 // CORS
 const whitelist = ['http://localhost:3000', 'https://www.yourdomain.com'];
