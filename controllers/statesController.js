@@ -8,8 +8,13 @@ const getStates = async (req, res) => {
   } else if (req.query.contig === 'false') {
     states = states.filter(state => state.code === 'AK' || state.code === 'HI');
   }
-
   res.json(states);
 }
 
-export default  { getStates };
+const getState = async (req, res) => {
+  const state = statesData.find(s => s.code === req.params.state);
+  res.json(state);
+}
+
+
+export default  { getStates, getState };
