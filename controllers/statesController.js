@@ -22,4 +22,8 @@ const getCapital = (req, res) => {
 }
 
 
-export default  { getStates, getState, getCapital };
+const getNickname = (req, res) => {
+  const state = statesData.find(s => s.code === req.params.state);
+  res.json({state: state.state, nickname: state.nickname });
+}
+export default  { getStates, getState, getCapital, getNickname};

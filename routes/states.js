@@ -12,6 +12,9 @@ router.route('/:state').get(verifyStates, statesController.getState);
 // State Capitals
 router.route('/:state/capital').get(verifyStates, statesController.getCapital);
 
+// State nicknames
+router.route('/:state/nickname').get(verifyStates, statesController.getNickname)
+
 
 
 
