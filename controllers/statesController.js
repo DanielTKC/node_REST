@@ -16,5 +16,10 @@ const getState = async (req, res) => {
   res.json(state);
 }
 
+const getCapital = (req, res) => {
+  const state = statesData.find(s => s.code === req.params.state);
+  res.json({state: state.state, capital: state.capital_city });
+}
 
-export default  { getStates, getState };
+
+export default  { getStates, getState, getCapital };
