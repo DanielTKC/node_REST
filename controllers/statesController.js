@@ -11,19 +11,18 @@ const getStates = async (req, res) => {
   res.json(states);
 }
 
-const getState = async (req, res) => {
-  const state = statesData.find(s => s.code === req.params.state);
+const getState = (req, res) => {
+  const state = statesData.find(s => s.code === req.code);
   res.json(state);
 }
 
 const getCapital = (req, res) => {
-  const state = statesData.find(s => s.code === req.params.state);
-  res.json({state: state.state, capital: state.capital_city });
+  const state = statesData.find(s => s.code === req.code);
+  res.json({ state: state.state, capital: state.capital_city });
 }
 
-
 const getNickname = (req, res) => {
-  const state = statesData.find(s => s.code === req.params.state);
-  res.json({state: state.state, nickname: state.nickname });
+  const state = statesData.find(s => s.code === req.code);
+  res.json({ state: state.state, nickname: state.nickname });
 }
 export default  { getStates, getState, getCapital, getNickname};

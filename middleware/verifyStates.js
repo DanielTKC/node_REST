@@ -6,7 +6,7 @@ const verifyStates = async (req, res, next) => {
   if (!stateCodes.includes(code)) {
     return res.status(400).json({message: 'Invalid state Code'});
   }
-  req.params.state = code;
+  req.code = code;
   next();
 };
 
