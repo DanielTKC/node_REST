@@ -1,5 +1,6 @@
 import statesData from '../models/statesData.json' with { type: 'json' };
 
+import State from '../models/State.js';
 
 const getStates = async (req, res) => {
   let states = statesData;
