@@ -53,4 +53,13 @@ const getAdmissionDate = (req, res) => {
   res.json({ state: state.state, population: state.admission_date });
 }
 
-export default  { getStates, getState, getCapital, getNickname, getPopulation, getAdmissionDate, getFunFact };
+// POST
+const addFunFact = async (req, res) => {
+  const { funfacts }  = req.body;
+  if (!funfacts) {
+    return res.status(400).json({ message: 'State fun facts value required' });
+  }
+}
+
+
+export default  { getStates, getState, getCapital, getNickname, getPopulation, getAdmissionDate, getFunFact, addFunFact };
