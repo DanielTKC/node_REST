@@ -17,9 +17,7 @@ const getStates = async (req, res) => {
 const getState = async (req, res) => {
   const state = statesData.find(s => s.code === req.code);
   const stateMongo = await State.findOne({stateCode: req.code}).exec();
-  if (stateMongo && stateMongo.funfacts) {
-    state.funfacts = stateMongo.funfacts;
-  }
+  state.funfacts = (stateMongo && stateMongo.funfacts) ? stateMongo.funfacts : [];
   res.json(state);
 }
 
