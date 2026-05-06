@@ -21,6 +21,9 @@ router.route('/:state/population').get(verifyStates, statesController.getPopulat
 // Admission date
 router.route('/:state/admission').get(verifyStates, statesController.getAdmissionDate);
 
+// fun facts
+router.route('/:state/funfact').get(verifyStates, statesController.getFunFact);
+
 
 
 

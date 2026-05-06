@@ -2,6 +2,8 @@ import statesData from '../models/statesData.json' with { type: 'json' };
 
 import State from '../models/State.js';
 
+// GET requests
+
 const getStates = async (req, res) => {
   let states = statesData;
   if (req.query.contig === 'true') {
@@ -12,9 +14,25 @@ const getStates = async (req, res) => {
   res.json(states);
 }
 
-const getState = (req, res) => {
+const getState = async (req, res) => {
   const state = statesData.find(s => s.code === req.code);
+  const stateMongo = await State.findOne({stateCode: req.code}).exec();
+  if (stateMongo && stateMongo.funfacts) {
+    state.funfacts = stateMongo.funfacts;
+  }
   res.json(state);
+}
+
+const getFunFact = async (req, res) => {
+  const state = statesData.find(s => s.code === req.code);
+  const stateMongo = await State.findOne({stateCode: req.code }).exec();
+
+  if (!stateMongo || !stateMongo.funfacts || stateMongo.funfacts.length === 0) {
+    return res.json({ message: `No Fun Facts found for ${state.state}` });
+  }
+
+  const randomFact = stateMongo.funfacts[Math.floor(Math.random() * stateMongo.funfacts.length)];
+  res.json({ funfact: randomFact });
 }
 
 const getCapital = (req, res) => {
@@ -36,4 +54,5 @@ const getAdmissionDate = (req, res) => {
   const state = statesData.find(s => s.code === req.code);
   res.json({ state: state.state, population: state.admission_date });
 }
-export default  { getStates, getState, getCapital, getNickname, getPopulation, getAdmissionDate };
+
+export default  { getStates, getState, getCapital, getNickname, getPopulation, getAdmissionDate, getFunFact };
