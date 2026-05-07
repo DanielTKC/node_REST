@@ -15,9 +15,15 @@ const getStates = async (req, res) => {
 }
 
 const getState = async (req, res) => {
-  const state = statesData.find(s => s.code === req.code);
+  // using the spread operator to make a shallow copy because i kept mutating the original array.
+  const state = {...statesData.find(s => s.code === req.code)};
   const stateMongo = await State.findOne({stateCode: req.code}).exec();
-  state.funfacts = (stateMongo && stateMongo.funfacts) ? stateMongo.funfacts : [];
+  // only attach funfacts when a doc ACTUALLY exists.
+  // NH has no mongo doc so should have 19 properties
+  // KS has mongo with facts so it gets added and has 20 properties
+  // RI has a mongo doc with [] funfacts
+  // I assumed earlier i needed to add a mongo doc with [] to every state because of the RI [] lol whoops!
+  if (stateMongo) state.funfacts = stateMongo.funfacts;
   res.json(state);
 }
 
