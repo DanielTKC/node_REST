@@ -24,7 +24,7 @@ router.route('/:state/admission').get(verifyStates, statesController.getAdmissio
 // fun facts
 router.route('/:state/funfact')
   .get(verifyStates, statesController.getFunFact)
-  .post(verifyStates, statesController.addFunFact);
+  .post(verifyStates, statesController.createFunFact);
 
 
 
