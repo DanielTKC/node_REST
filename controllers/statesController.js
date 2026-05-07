@@ -56,21 +56,24 @@ const getAdmissionDate = (req, res) => {
 // POST
 const createFunFact = async (req, res) => {
   // create the funfacts array and validate it exists and is an array
-  const {funfacts} = req.body;
-  if (!funfacts) {
-    return res.status(400).json({message: 'State fun facts value required'});
-  }
-  if (!Array.isArray(funfacts)) {
-    return res.status(400).json({message: 'State fun facts value must be an array'});
-  }
   try {
+    const {funfacts} = req.body;
+
+    if (!funfacts) {
+      return res.status(400).json({message: 'State fun facts value required'});
+    }
+    if (!Array.isArray(funfacts)) {
+      return res.status(400).json({message: 'State fun facts value must be an array'});
+    }
     const state = await State.findOneAndUpdate(
       {stateCode: req.code},
+      // append each funfact to the funfacts array in the document
       {$push: {funfacts: {$each: funfacts}}},
-      {new: true, upsert: true}
-    )
+      {returnDocument: 'after', upsert: true}
+    );
+    res.json(state);
   } catch (err) {
-    console.error(err);
+    res.status(500).json({ message: err.message });  // Today I learned time can be lost waiting on a response that never comes.
   }
 }
 
@@ -78,8 +81,8 @@ const createFunFact = async (req, res) => {
 
 const updateFunFact = async (req, res) => {
   // validation for index and funfact
-  const {index, funfacts} = req.body;
-  if (!funfacts) {
+  const {index, funfact} = req.body;
+  if (!funfact) {
     return res.status(400).json({message: 'State fun facts value required'});
   }
   if (!index) {
@@ -92,11 +95,12 @@ const updateFunFact = async (req, res) => {
   if (!stateMongo || !stateMongo.funfacts || stateMongo.funfacts.length === 0) {
     return res.json({message: `No Fun Facts found for ${state.state}`});
   }
-
-  if (index -1 <0 || index -1 >= stateMongo.funfacts.length) {
+// no fun facts found at the index
+  if (index - 1 < 0 || index - 1 >= stateMongo.funfacts.length) {
     return res.status(400).json({message: `No Fun Fact at index ${state.state}`});
   }
-  stateMongo.funfacts[index -1 ] = funfact;
+  // otherwise update
+  stateMongo.funfacts[index - 1] = funfact;
   const result = await stateMongo.save();
   res.json(result);
 
