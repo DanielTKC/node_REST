@@ -45,7 +45,7 @@ const getNickname = (req, res) => {
 
 const getPopulation = (req, res) => {
   const state = statesData.find(s => s.code === req.code);
-  res.json({state: state.state, population: state.population});
+  res.json({state: state.state, population: state.population.toLocaleString()});
 }
 
 const getAdmissionDate = (req, res) => {
