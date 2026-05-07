@@ -26,7 +26,7 @@ app.use(morgan('dev'));
 
 
 // CORS
-const whitelist = ['http://localhost:3000', 'https://express-js-state-fun-facts.onrender.com/'];
+const whitelist = ['http://localhost:3000', 'https://express-js-state-fun-facts.onrender.com/', 'https://dazzling-snickerdoodle-777101.netlify.app/'];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {   // remove origin for deploy
