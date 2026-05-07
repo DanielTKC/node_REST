@@ -80,30 +80,34 @@ const createFunFact = async (req, res) => {
 // Patch
 
 const updateFunFact = async (req, res) => {
-  // validation for index and funfact
-  const {index, funfact} = req.body;
-  if (!funfact) {
-    return res.status(400).json({message: 'State fun facts value required'});
-  }
-  if (!index) {
-    return res.status(400).json({message: 'Index  required'});
-  }
-  const state = statesData.find(s => s.code === req.code);
-  const stateMongo = await State.findOne({stateCode: req.code}).exec();
-
-  // no doc or no facts
-  if (!stateMongo || !stateMongo.funfacts || stateMongo.funfacts.length === 0) {
-    return res.json({message: `No Fun Facts found for ${state.state}`});
-  }
+  try {
+    const {index, funfact} = req.body;
+    // validation for index and funfact
+    if (!index) {
+      return res.status(400).json({message: 'Index  required'});
+    }
+    if (!funfact) {
+      return res.status(400).json({message: 'State fun facts value required'});
+    }
+    const state = statesData.find(s => s.code === req.code);
+    const stateMongo = await State.findOne({stateCode: req.code}).exec();
+    // no doc or no facts
+    if (!stateMongo || !stateMongo.funfacts || stateMongo.funfacts.length === 0) {
+      return res.json({message: `No Fun Facts found for ${state.state}`});
+    }
 // no fun facts found at the index
-  if (index - 1 < 0 || index - 1 >= stateMongo.funfacts.length) {
-    return res.status(400).json({message: `No Fun Fact at index ${state.state}`});
-  }
-  // otherwise update
-  stateMongo.funfacts[index - 1] = funfact;
-  const result = await stateMongo.save();
-  res.json(result);
+    if (index - 1 < 0 || index - 1 >= stateMongo.funfacts.length) {
+      return res.status(400).json({message: `No Fun Fact at index ${state.state}`});
+    }
+    // otherwise update
+    stateMongo.funfacts[index - 1] = funfact;
+    const result = await stateMongo.save();
+    res.json(result);
 
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
 
 }
 
