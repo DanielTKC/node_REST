@@ -84,10 +84,10 @@ const updateFunFact = async (req, res) => {
     const {index, funfact} = req.body;
     // validation for index and funfact
     if (!index) {
-      return res.status(400).json({message: 'Index  required'});
+      return res.status(400).json({message: 'State fun fact index value required'});
     }
     if (!funfact) {
-      return res.status(400).json({message: 'State fun facts value required'});
+      return res.status(400).json({message: 'State fun fact value required'});
     }
     const state = statesData.find(s => s.code === req.code);
     const stateMongo = await State.findOne({stateCode: req.code}).exec();
@@ -97,7 +97,7 @@ const updateFunFact = async (req, res) => {
     }
 // no fun facts found at the index
     if (index - 1 < 0 || index - 1 >= stateMongo.funfacts.length) {
-      return res.status(400).json({message: `No Fun Fact at index ${state.state}`});
+      return res.status(400).json({message: `No Fun Fact found at that index for ${state.state}`});
     }
     // otherwise update
     stateMongo.funfacts[index - 1] = funfact;
@@ -106,6 +106,37 @@ const updateFunFact = async (req, res) => {
 
   } catch (err) {
     console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+
+}
+
+const deleteFunFact = async (req, res) => {
+  try {
+    const {index} = req.body;
+    // make sure index is in the body
+    if (!index) {
+      return res.status(400).json({message: 'State fun fact index value required'});
+    }
+    const state = statesData.find(s => s.code === req.code);
+    const stateMongo = await State.findOne({stateCode: req.code}).exec();
+    // if no facts found
+    if (!stateMongo || !stateMongo.funfacts || stateMongo.funfacts.length === 0) {
+      return res.status(404).json({message: `No Fun Facts found for ${state.state}`});
+    }
+    // if no fun facts found at that index
+    if (index - 1 < 0 || index - 1 >= stateMongo.funfacts.length) {
+      return res.status(400).json({message: `No Fun Fact found at that index for ${state.state}`});
+    }
+    stateMongo.funfacts.splice(index - 1, 1);
+    const result = await stateMongo.save();
+    res.json(result);
+
+
+
+
+
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
 
@@ -121,5 +152,7 @@ export default {
   getAdmissionDate,
   getFunFact,
   createFunFact,
-  updateFunFact
+  updateFunFact,
+  deleteFunFact,
+
 };
