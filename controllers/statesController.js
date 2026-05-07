@@ -56,7 +56,7 @@ const getPopulation = (req, res) => {
 
 const getAdmissionDate = (req, res) => {
   const state = statesData.find(s => s.code === req.code);
-  res.json({state: state.state, population: state.admission_date});
+  res.json({state: state.state, admitted: state.admission_date});
 }
 
 // POST
