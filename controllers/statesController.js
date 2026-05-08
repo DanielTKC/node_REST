@@ -5,6 +5,7 @@ import State from '../models/State.js';
 // GET requests
 
 const getStates = async (req, res) => {
+  try {
   // we need ALL the documents in the collection
   const stateDocs = await State.find({}).exec();
   // build an array of all 50 states
@@ -21,6 +22,9 @@ const getStates = async (req, res) => {
     states = states.filter(state => state.code === 'AK' || state.code === 'HI');
   }
   res.json(states);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 }
 
 const getState = async (req, res) => {
