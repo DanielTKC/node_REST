@@ -5,7 +5,16 @@ import State from '../models/State.js';
 // GET requests
 
 const getStates = async (req, res) => {
-  let states = statesData;
+  // we need ALL the documents in the collection
+  const stateDocs = await State.find({}).exec();
+  // build an array of all 50 states
+  let states = statesData.map(state => {
+    // for the current state look through mongodb to find a matching document by state code
+    const document = stateDocs.find(doc => doc.stateCode === state.code);
+    // if it exists and has at least one fun fact return a copy with the merged fun fact
+    if (document?.funfacts?.length) return {...state, funfacts: document.funfacts};
+    return state;
+  });
   if (req.query.contig === 'true') {
     states = states.filter(state => state.code !== 'AK' && state.code !== 'HI');
   } else if (req.query.contig === 'false') {
