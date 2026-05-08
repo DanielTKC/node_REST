@@ -30,7 +30,7 @@ const whitelist = ['http://localhost:3500', 'https://express-js-state-fun-facts.
 const corsOptions = {
     origin: (origin, callback) => {
       if (!origin) {
-        callback(new Error('Not allowed by CORS'));
+        callback(null, true);
       } else if (whitelist.includes(origin)) {
         callback(null, true);
       } else {
